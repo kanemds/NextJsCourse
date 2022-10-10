@@ -1,8 +1,12 @@
-
+import Head from 'next/head'
 
 const about = () => {
   return (
-    <div><h1>about</h1></div>
+    <div>
+      <Head>
+        <title>NextJs | About</title>
+      </Head>
+      <h1>about</h1></div>
   )
 }
 
