@@ -1,5 +1,7 @@
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import { server } from '../../../../config/index'
+import Meta from '../../../components/Meta'
 
 
 const article = ({ article }) => {
@@ -9,6 +11,7 @@ const article = ({ article }) => {
 
   return (
     <>
+      <Meta title={article.title} />
       <h1>{article.title}</h1>
       <p>{article.body}</p>
       <br />
@@ -35,10 +38,8 @@ const article = ({ article }) => {
 // This step happens in parallel as well, to speed up the build.
 
 
-
-// caseTwo faster this fetching once at the begenning
 export const getStaticProps = async (conext) => {
-  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${conext.params.id}`)
+  const res = await fetch(`${server}/api/articles/${conext.params.id}`)
 
   const article = await res.json()
 
@@ -48,9 +49,9 @@ export const getStaticProps = async (conext) => {
   }
 }
 
-// getting all posts even though home page display limit of 6 
+
 export const getStaticPaths = async () => {
-  const res = await fetch(`https://jsonplaceholder.typicode.com/posts`)
+  const res = await fetch(`${server}/api/articles`)
   const articles = await res.json()
 
   const ids = articles.map(article => article.id)
@@ -61,6 +62,32 @@ export const getStaticPaths = async () => {
     fallback: false // <--- giving 404 if not exist
   }
 }
+
+// // caseTwo faster this fetching once at the begenning
+// export const getStaticProps = async (conext) => {
+//   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${conext.params.id}`)
+
+//   const article = await res.json()
+
+//   return {
+//     props:
+//       { article }
+//   }
+// }
+
+// // getting all posts even though home page display limit of 6 
+// export const getStaticPaths = async () => {
+//   const res = await fetch(`https://jsonplaceholder.typicode.com/posts`)
+//   const articles = await res.json()
+
+//   const ids = articles.map(article => article.id)
+//   const paths = ids.map(id => ({ params: { id: id.toString() } }))
+
+//   return {
+//     paths,
+//     fallback: false // <--- giving 404 if not exist
+//   }
+// }
 
 
 
