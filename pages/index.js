@@ -1,6 +1,6 @@
 
 import { ArticleList } from '../components/ArticleList'
-import { server } from '../../config/index'
+import { server } from '../config/index'
 
 export default function Home({ articles }) {
   console.log(articles)
